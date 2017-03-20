@@ -9,6 +9,15 @@
         args <- match.call()
         rhs <- args$rhs
 
+        # First, evaluate any `(function(x) { ... })` forms to create anonymous
+        # functions.
+        if (magrittr:::is_parenthesized(rhs)) {
+            rhs <- eval(rhs, env, env)
+        }
+        # Disallow bare anonymous functions.
+        else if (is.call(rhs) && identical(rhs[[1L]], quote(`function`))) {
+            stop("Anonymous function must be parenthesized: ", deparse(rhs),
+                 call. = FALSE)
         }
 
         body <- if (magrittr:::is_function(rhs)) {
