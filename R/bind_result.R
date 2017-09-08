@@ -4,45 +4,69 @@
 #'
 #' @export
 `%>>=%.result` <- function(lhs, rhs) {
-    if (typeof(lhs$error) == "NULL") {
-        env <- new.env(parent = parent.frame())
-        args <- match.call()
-        rhs <- args$rhs
+  # If this is an error-valued result, skip executing the RHS and simply pass
+  # the LHS on.
+  if (is.null(lhs$result)) return(lhs)
 
-        # First, evaluate any `(function(x) { ... })` forms to create anonymous
-        # functions.
-        if (magrittr:::is_parenthesized(rhs)) {
-            rhs <- eval(rhs, env, env)
-        }
-        # Disallow bare anonymous functions.
-        else if (is.call(rhs) && identical(rhs[[1L]], quote(`function`))) {
-            stop("Anonymous function must be parenthesized: ", deparse(rhs),
-                 call. = FALSE)
-        }
+  rhs <- rlang::enquo(rhs)
 
-        body <- if (magrittr:::is_function(rhs)) {
-            # Turn `fn` into `fn(.)`.
-            magrittr:::prepare_function(rhs)
-        }
-        else if (magrittr:::is_first(rhs)) {
-            # Turn `fn(x, y, z)` into `fn(., x, y, z)`.
-            magrittr:::prepare_first(rhs)
-        }
-        else {
-            stop("Unsupported RHS: ", deparse(rhs), call. = FALSE)
-        }
+  # Temporarily give the `.` symbol the LHS value in the caller environment.
+  # Source: https://gist.github.com/lionel-/10cd649b31f11512e4aea3b7a98fe381
+  env <- rlang::caller_env()
+  if (rlang::env_has(env, ".")) {
+    dot <- env$dot
+    on.exit(rlang::env_bind(.env = env, `.` = dot))
+  } else {
+    on.exit(rlang::env_unbind(env, "."))
+  }
+  env$. <- lhs$result
 
-        env[["_fn"]] <- eval(call("function", as.pairlist(alist(. = )),
-                                  body), env, env)
-        env[["_lhs"]] <- lhs$result
-        expr <- quote({
-            res <- tryCatch(`_fn`(`_lhs`), error = function(e) e)
-            as_result(res)
-        })
-        eval(expr, env, env)
-    }
-    # Otherwise, skip executing the rhs and simply pass the lhs on.
-    else {
-        lhs
-    }
+  # Turn bare symbols into functions.
+  if (rlang::is_symbol(rlang::f_rhs(rhs))) {
+    rlang::f_rhs(rhs) <- rlang::lang(rlang::f_rhs(rhs))
+  }
+
+  # Prevent some pathelogical inputs, such as `x %>>=% "cats"`.
+  if (!rlang::is_lang(rlang::f_rhs(rhs))) {
+    stop("RHS must be callable; '", rlang::f_rhs(rhs), "' is not",
+         call. = FALSE)
+  }
+
+  # TODO: Prevent bare anonymous functions.
+  # TODO: Handle parenthetical inputs.
+
+  # For debugging:
+  # return(rhs)
+
+  rhs <- ensure_dot(rhs)
+  expr <- rlang::new_quosure(rlang::expr({
+    res <- tryCatch(rlang::UQE(rhs), error = function(e) e)
+    as_result(res)
+  }), env = env)
+  expr
+  rlang::eval_tidy(expr)
 }
+
+ensure_dot <- function(expr) {
+  stopifnot(rlang::is_quosure(expr) && rlang::is_lang(rlang::f_rhs(expr)))
+  # The right-hand side is a CONS where the CAR is the function symbol and the
+  # CDR is the pairlist of arguments (or NULL).
+  args <- rlang::node_cdr(rlang::f_rhs(expr))
+  # Loop over the CONS cells.
+  arg <- args
+  while (!rlang::is_null(arg)) {
+    # The CAR of an argument is its value, as in `name = value` or just `value`
+    # if it is not a named argument. We're looking for dots in these values. If
+    # we find one, the quosure is fine as-is.
+    if (identical(dot_symbol, rlang::node_car(arg))) {
+      return(expr)
+    }
+    arg <- rlang::node_cdr(arg)
+  }
+  # No dots found. Prefix the argument CONS with one, in place.
+  new_args <- rlang::node(dot_symbol, args)
+  rlang::mut_node_cdr(rlang::f_rhs(expr), new_args)
+  invisible(expr)
+}
+
+dot_symbol <- quote(.)
