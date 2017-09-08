@@ -38,13 +38,29 @@
   # For debugging:
   # return(rhs)
 
-  rhs <- ensure_dot(rhs)
+  # Blocks are simply executed with `.` bound.
+  if (!is_block(rhs)) {
+    rhs <- ensure_dot(rhs)
+  }
+
   expr <- rlang::new_quosure(rlang::expr({
     res <- tryCatch(rlang::UQE(rhs), error = function(e) e)
     as_result(res)
   }), env = env)
   expr
   rlang::eval_tidy(expr)
+}
+
+is_block <- function(expr) {
+  stopifnot(rlang::is_quosure(expr) && rlang::is_lang(rlang::f_rhs(expr)))
+  car <- rlang::node_car(rlang::f_rhs(expr))
+  # Look for the first part of the pairlist that isn't another expression. This
+  # supports forms like `{ y <- . * 2; function() { log(., y) } }()`, although
+  # it seems unlikely they are useful.
+  while(rlang::is_lang(car)) {
+    car <- rlang::node_car(car)
+  }
+  identical(bracket_symbol, car)
 }
 
 ensure_dot <- function(expr) {
@@ -70,3 +86,4 @@ ensure_dot <- function(expr) {
 }
 
 dot_symbol <- quote(.)
+bracket_symbol <- quote(`{`)

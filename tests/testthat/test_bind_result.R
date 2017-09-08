@@ -37,6 +37,20 @@ testthat::test_that("bind-result disallows bare anonymous functions", {
     testthat::expect_error(as_result(10) %>>=% function(x) log(x / 2))
 })
 
+testthat::context("blocks")
+
+testthat::test_that("bind-result handles basic blocks", {
+    testthat::expect_equal(as_result(10) %>>=% { log(. / 2) },
+                           as_result(log(5)))
+})
+
+testthat::test_that("bind-result handles complex blocks", {
+    testthat::expect_equal(as_result(10) %>>=% {
+        base <- . * 2
+        function() log(., base)
+    }(), as_result(log(10, 20)))
+})
+
 testthat::context("non-standard evaluation in bind-result")
 
 testthat::test_that("bind-result env has the correct parent env", {
