@@ -6,7 +6,8 @@ Author: Aaron Jacobs <atheriel@gmail.com>
 Maintainer: Aaron Jacobs <atheriel@gmail.com>
 Description: Tools for handling errors in pipe-based workflows
 License: GPLv2
+Imports: rlang
+Suggests: testthat
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
-Suggests: testthat
