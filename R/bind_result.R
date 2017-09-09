@@ -32,8 +32,8 @@
          call. = FALSE)
   }
 
-  # TODO: Prevent bare anonymous functions.
-  # TODO: Handle parenthetical inputs.
+  # Handle parenthetical inputs and bare anonymous functions.
+  rhs <- normalize_anon_fns(rhs)
 
   # For debugging:
   # return(rhs)
@@ -49,6 +49,37 @@
   }), env = env)
   expr
   rlang::eval_tidy(expr)
+}
+
+normalize_anon_fns <- function(expr) {
+  stopifnot(rlang::is_quosure(expr) && rlang::is_lang(rlang::f_rhs(expr)))
+  rhs <- rlang::f_rhs(expr)
+  # First, check for bare anonymous functions and wrap them in parentheses.
+  if (identical(function_symbol, rlang::node_car(rhs))) {
+    rlang::f_rhs(expr) <- rlang::lang(rhs)
+    return(expr)
+  }
+  # Look for the first part of the pairlist that isn't another expression. This
+  # supports forms like `(function(x, y) log(x, y))(., 20)`.
+  while (rlang::is_lang(rlang::node_car(rhs))) {
+    rhs <- rlang::node_car(rhs)
+  }
+  if (identical(paren_symbol, rlang::node_car(rhs))) { # Found a parenthesis.
+    inside <- rlang::node_cadr(rhs)
+    if (!rlang::is_lang(inside) ||
+          !identical(function_symbol, rlang::node_car(inside))) {
+      stop("parenthesized expressions must contain an anonymous function",
+           call. = FALSE)
+    }
+
+    # If the right-hand-side doesn't have arguments, add them. This effectively
+    # turns forms like `(function(x) x)` into `(function(x) x)()`, meaning they
+    # can be handled natively by `ensure_dot()`.
+    if (!rlang::is_lang(rlang::node_car(rlang::f_rhs(expr)))) {
+      rlang::f_rhs(expr) <- rlang::lang(rlang::f_rhs(expr))
+    }
+  }
+  expr
 }
 
 is_block <- function(expr) {
@@ -85,5 +116,7 @@ ensure_dot <- function(expr) {
   invisible(expr)
 }
 
+paren_symbol <- quote(`(`)
+function_symbol <- quote(`function`)
 dot_symbol <- quote(.)
 bracket_symbol <- quote(`{`)

@@ -28,13 +28,24 @@ testthat::test_that("bind-result handles functions with operations on dots", {
     testthat::expect_equal(as_result(10) %>>=% log(. / 2), as_result(log(5)))
 })
 
+testthat::context("parentheses and anonymous functions")
+
 testthat::test_that("bind-result handles parenthesized anonymous functions", {
     testthat::expect_equal(as_result(10) %>>=% (function(x) log(x / 2)),
                            as_result(log(5)))
+    testthat::expect_equal(as_result(10) %>>=% (function(x) log(x / 2))(),
+                           as_result(log(5)))
 })
 
-testthat::test_that("bind-result disallows bare anonymous functions", {
-    testthat::expect_error(as_result(10) %>>=% function(x) log(x / 2))
+testthat::test_that("bind-result allows bare anonymous functions", {
+    testthat::expect_equal(as_result(10) %>>=% function(x) log(x / 2),
+                           as_result(log(5)))
+})
+
+testthat::test_that("bind-result disallows non-function parenthesized expressions", {
+    testthat::expect_error(as_result(10) %>>=% (. + 10))
+    testthat::expect_error(as_result(10) %>>=% ((function(x) x)))
+    testthat::expect_error(as_result(10) %>>=% (. + 10)(100))
 })
 
 testthat::context("blocks")
