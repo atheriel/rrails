@@ -24,8 +24,9 @@ testthat::test_that("bind-result handles functions with explicit dots", {
     testthat::expect_equal(as_result(10) %>>=% log(10, .), as_result(1))
 })
 
-testthat::test_that("bind-result handles functions with operations on dots", {
-    testthat::expect_equal(as_result(10) %>>=% log(. / 2), as_result(log(5)))
+testthat::test_that("bind-result does not handle functions with operations on dots", {
+    testthat::expect_equal(as_result(10) %>>=% log(. / 2),
+                           as_result(log(10, 5)))
 })
 
 testthat::context("parentheses and anonymous functions")
