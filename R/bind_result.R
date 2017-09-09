@@ -10,16 +10,8 @@
 
   rhs <- rlang::enquo(rhs)
 
-  # Temporarily give the `.` symbol the LHS value in the caller environment.
-  # Source: https://gist.github.com/lionel-/10cd649b31f11512e4aea3b7a98fe381
-  env <- rlang::caller_env()
-  if (rlang::env_has(env, ".")) {
-    dot <- env$dot
-    on.exit(rlang::env_bind(.env = env, `.` = dot))
-  } else {
-    on.exit(rlang::env_unbind(env, "."))
-  }
-  env$. <- lhs$result
+  # Create a child environment with the `.` bound to the LHS value.
+  env <- rlang::child_env(.parent = rlang::caller_env(), . = lhs$result)
 
   # Turn bare symbols into functions.
   if (rlang::is_symbol(rlang::f_rhs(rhs))) {
@@ -35,9 +27,6 @@
   # Handle parenthetical inputs and bare anonymous functions.
   rhs <- normalize_anon_fns(rhs)
 
-  # For debugging:
-  # return(rhs)
-
   # Blocks are simply executed with `.` bound.
   if (!is_block(rhs)) {
     rhs <- ensure_dot(rhs)
@@ -47,8 +36,12 @@
     res <- tryCatch(rlang::UQE(rhs), error = function(e) e)
     as_result(res)
   }), env = env)
-  expr
-  rlang::eval_tidy(expr)
+
+  if (getOption("rrails.debug", FALSE)) {
+    expr
+  } else {
+    rlang::eval_tidy(expr)
+  }
 }
 
 normalize_anon_fns <- function(expr) {
