@@ -7,6 +7,7 @@
 \alias{as_result.result}
 \alias{is_result}
 \alias{print.result}
+\alias{unwrap_result}
 \title{The Result object}
 \usage{
 as_result(x, ...)
@@ -20,6 +21,8 @@ as_result(x, ...)
 is_result(x)
 
 \method{print}{result}(x, ...)
+
+unwrap_result(x)
 }
 \arguments{
 \item{x}{An object.}

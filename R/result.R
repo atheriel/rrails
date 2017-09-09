@@ -52,3 +52,15 @@ print.result <- function(x, ...) {
         print(x$error, ...)
     }
 }
+
+#' @rdname result
+#'
+#' @export
+unwrap_result <- function(x) {
+  if (!is_result(x)) return(x)
+  if (is.null(x$error)) {
+    x$result
+  } else {
+    stop(x$error)
+  }
+}
