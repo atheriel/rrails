@@ -11,4 +11,3 @@ lhs \%>>=\% rhs
 the semantics of \code{>>=} in other functional programming languages, such
 as F# or Haskell.
 }
-

@@ -31,4 +31,3 @@ default methods).}
 \code{is_result} and \code{as_result} test whether an object is a result and
 coerce to a result object, respectively.
 }
-
