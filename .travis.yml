@@ -10,6 +10,11 @@ r:
 r_binary_packages:
   - rlang
   - testthat
+  # Required by lintr:
+  - knitr
+  - stringdist
+  # Required by xml2:
+  - Rcpp
 
 r_github_packages:
   - jimhester/lintr

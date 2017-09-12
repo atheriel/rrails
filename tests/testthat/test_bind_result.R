@@ -42,7 +42,9 @@ testthat::test_that("bind-result allows bare anonymous functions", {
 
 testthat::test_that("bind-result forbids other parenthesized expressions", {
   testthat::expect_error(as_result(10) %>>=% (. + 10))
-  testthat::expect_error(as_result(10) %>>=% ( (function(x) x)) )
+  testthat::expect_error(as_result(10) %>>=% (
+    (function(x) x)
+  ))
   testthat::expect_error(as_result(10) %>>=% (. + 10)(100))
 })
 
