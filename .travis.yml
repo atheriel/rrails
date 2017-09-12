@@ -1,0 +1,15 @@
+language: r
+cache: packages
+sudo: required
+dist: trusty
+latex: false
+
+r:
+  - release
+
+r_binary_packages:
+  - rlang
+  - testthat
+
+r_github_packages:
+  - jimhester/lintr
