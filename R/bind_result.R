@@ -15,7 +15,8 @@
   expr <- rlang::new_quosure(rlang::expr({
     res <- tryCatch(rlang::UQE(rhs), error = function(e) e)
     as_result(res)
-  }), env = rlang::f_env(rhs))
+  }),
+  env = rlang::f_env(rhs))
 
   if (getOption("rrails.debug", FALSE)) {
     expr

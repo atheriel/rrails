@@ -24,7 +24,8 @@ normalize_pipe_rhs <- function(rhs, binding) {
   }
 
   # Modify the environment so that `.` is bound to `binding`.
-  rlang::f_env(rhs) <- rlang::child_env(.parent = rlang::f_env(rhs), . = binding)
+  rlang::f_env(rhs) <- rlang::child_env(.parent = rlang::f_env(rhs),
+                                        . = binding)
 
   rhs
 }
@@ -42,7 +43,7 @@ normalize_anon_fns <- function(expr) {
   while (rlang::is_lang(rlang::node_car(rhs))) {
     rhs <- rlang::node_car(rhs)
   }
-  if (identical(paren_symbol, rlang::node_car(rhs))) { # Found a parenthesis.
+  if (identical(paren_symbol, rlang::node_car(rhs))) {
     inside <- rlang::node_cadr(rhs)
     if (!rlang::is_lang(inside) ||
           !identical(function_symbol, rlang::node_car(inside))) {
@@ -66,7 +67,7 @@ is_block <- function(expr) {
   # Look for the first part of the pairlist that isn't another expression. This
   # supports forms like `{ y <- . * 2; function() { log(., y) } }()`, although
   # it seems unlikely they are useful.
-  while(rlang::is_lang(car)) {
+  while (rlang::is_lang(car)) {
     car <- rlang::node_car(car)
   }
   identical(bracket_symbol, car)
