@@ -1,2 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.travis\.yml$
+^\.lintr$
+^[^/]+.Rmd$
+^cran-comments\.md$
