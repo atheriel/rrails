@@ -6,6 +6,8 @@
 \alias{as_result.error}
 \alias{as_result.result}
 \alias{is_result}
+\alias{result_is_ok}
+\alias{result_is_error}
 \alias{print.result}
 \alias{unwrap_result}
 \title{The Result object}
@@ -19,6 +21,10 @@ as_result(x, ...)
 \method{as_result}{result}(x, ...)
 
 is_result(x)
+
+result_is_ok(x)
+
+result_is_error(x)
 
 \method{print}{result}(x, ...)
 

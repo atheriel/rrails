@@ -43,12 +43,28 @@ is_result <- function(x) inherits(x, "result")
 #' @rdname result
 #'
 #' @export
+result_is_ok <- function(x) {
+  stopifnot(is_result(x))
+  is.null(x$error)
+}
+
+#' @rdname result
+#'
+#' @export
+result_is_error <- function(x) {
+  stopifnot(is_result(x))
+  !is.null(x$error)
+}
+
+#' @rdname result
+#'
+#' @export
 print.result <- function(x, ...) {
     if (typeof(x$error) == "NULL") {
-        cat("Result:\n")
+        cat("Result is ok:\n")
         print(x$result, ...)
     } else {
-        cat("Error:\n")
+        cat("Result has an error:\n")
         print(x$error, ...)
     }
 }
