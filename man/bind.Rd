@@ -6,8 +6,16 @@
 \usage{
 lhs \%>>=\% rhs
 }
+\arguments{
+\item{lhs}{The left-hand side of the operator.}
+
+\item{rhs}{Although not required, it is intended that the right-hand side
+contain a function or block, evaluated with \code{.} bound to the value of
+\code{lhs}.}
+}
 \description{
 \code{\%>>=\%} (pronounced "bind") is a generic operator intended to match
-the semantics of \code{>>=} in other functional programming languages, such
-as F# or Haskell.
+the semantics of \code{>>=} in other functional programming languages, such as F#
+or Haskell. It is intended that the right-hand side will contain a function
+or block, similar to the pipe operator \code{\link[magrittr]{\%>\%}}.
 }

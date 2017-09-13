@@ -2,10 +2,28 @@
 % Please edit documentation in R/bind_result.R
 \name{\%>>=\%.result}
 \alias{\%>>=\%.result}
-\title{Bind result objects}
+\title{Safely pipe values through a chain of functions, avoiding errors}
 \usage{
-\method{\%>>=\%}{result}(lhs, rhs)
+lhs \%>>=\% rhs
+}
+\arguments{
+\item{lhs}{An object of class \code{"result"}.}
+
+\item{rhs}{A function or block, evaluated with \code{.} bound to the value of
+\code{lhs}, or ignored if there is no value in \code{lhs}.}
+}
+\value{
+An object of class \code{"result"} wrapping the output of the \code{rhs}
+function or block, or carrying forward its error if it has one.
 }
 \description{
-Bind result objects
+The bind operator for an object of class \code{"result"} executes the function or
+block on the right-hand side if the object contains a value, or passes on the
+error it contains if not. If the right-hand side function would raise an
+error, that error is captured in the returned value instead. To turn a
+regular R object into a result (or vice-versa) see \link{result}.
+}
+\details{
+The right-hand side syntax is largely identitcal to that of the pipe
+operator, \code{\link[magrittr]{\%>\%}}.
 }
