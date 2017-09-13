@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/atheriel/rrails.svg?branch=master)](https://travis-ci.org/atheriel/rrails)
 
-This package provides a new pipe operator, `%>>=` (pronounced "bind") for
+This package provides a new pipe operator, `%>>=%` (pronounced "bind") for
 writing failure-tolerant R code. Its approach is inspired by Scott Wlaschin's
 articles and talks about ["Railroad Oriented Programming"](https://fsharpforfunandprofit.com/rop/) in
 in the F# language.
