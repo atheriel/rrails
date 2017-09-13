@@ -2,9 +2,10 @@
 % Please edit documentation in R/bind_result.R
 \name{\%>>=\%.result}
 \alias{\%>>=\%.result}
+\alias{bind-result}
 \title{Safely pipe values through a chain of functions, avoiding errors}
 \usage{
-lhs \%>>=\% rhs
+\method{\%>>=\%}{result}(lhs, rhs)
 }
 \arguments{
 \item{lhs}{An object of class \code{"result"}.}

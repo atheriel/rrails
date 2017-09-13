@@ -13,6 +13,7 @@
 #' @usage lhs \%>>=\% rhs
 #'
 #' @rdname bind
+#' @aliases %>>=% bind
 #'
 #' @export
 `%>>=%` <- function(lhs, rhs) {

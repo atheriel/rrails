@@ -2,6 +2,7 @@
 % Please edit documentation in R/bind.R
 \name{\%>>=\%}
 \alias{\%>>=\%}
+\alias{bind}
 \title{The 'bind' operator}
 \usage{
 lhs \%>>=\% rhs

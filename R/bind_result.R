@@ -13,14 +13,13 @@
 #' @return An object of class `"result"` wrapping the output of the `rhs`
 #'   function or block, or carrying forward its error if it has one.
 #'
-#' @usage lhs \%>>=\% rhs
-#'
 #' @details
 #'
 #' The right-hand side syntax is largely identitcal to that of the pipe
 #' operator, \code{\link[magrittr]{\%>\%}}.
 #'
 #' @rdname bind-result
+#' @aliases %>>=%.result bind-result
 #'
 #' @export
 `%>>=%.result` <- function(lhs, rhs) {

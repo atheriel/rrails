@@ -7,6 +7,7 @@
 #' @param ... Further arguments passed on to other methods (unused by the
 #'   default methods).
 #'
+#' @name result
 #' @rdname result
 #'
 #' @export

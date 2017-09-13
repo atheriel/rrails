@@ -13,7 +13,10 @@ r_binary_packages:
   # Required by lintr:
   - knitr
   - stringdist
+  - rex
   # Required by xml2:
+  - BH
+  - lazyeval
   - Rcpp
 
 r_github_packages:
