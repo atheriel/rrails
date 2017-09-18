@@ -9,6 +9,8 @@ r:
 
 r_binary_packages:
   - rlang
+  - purrr
+  - dplyr
   - testthat
   # Required by lintr:
   - knitr

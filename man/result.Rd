@@ -7,10 +7,16 @@
 \alias{as_result.error}
 \alias{as_result.result}
 \alias{is_result}
-\alias{result_is_ok}
-\alias{result_is_error}
 \alias{print.result}
-\alias{unwrap_result}
+\alias{result_is_ok}
+\alias{result_is_ok.result}
+\alias{result_is_ok.list}
+\alias{result_is_error}
+\alias{result_is_error.result}
+\alias{result_is_error.list}
+\alias{unwrap}
+\alias{unwrap.result}
+\alias{unwrap.list}
 \title{The Result object}
 \usage{
 as_result(x, ...)
@@ -23,13 +29,25 @@ as_result(x, ...)
 
 is_result(x)
 
+\method{print}{result}(x, ...)
+
 result_is_ok(x)
+
+\method{result_is_ok}{result}(x)
+
+\method{result_is_ok}{list}(x)
 
 result_is_error(x)
 
-\method{print}{result}(x, ...)
+\method{result_is_error}{result}(x)
 
-unwrap_result(x)
+\method{result_is_error}{list}(x)
+
+unwrap(x)
+
+\method{unwrap}{result}(x)
+
+\method{unwrap}{list}(x)
 }
 \arguments{
 \item{x}{An object.}

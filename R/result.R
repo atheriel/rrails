@@ -44,22 +44,6 @@ is_result <- function(x) inherits(x, "result")
 #' @rdname result
 #'
 #' @export
-result_is_ok <- function(x) {
-  stopifnot(is_result(x))
-  is.null(x$error)
-}
-
-#' @rdname result
-#'
-#' @export
-result_is_error <- function(x) {
-  stopifnot(is_result(x))
-  !is.null(x$error)
-}
-
-#' @rdname result
-#'
-#' @export
 print.result <- function(x, ...) {
     if (typeof(x$error) == "NULL") {
         cat("Result is ok:\n")
@@ -73,11 +57,62 @@ print.result <- function(x, ...) {
 #' @rdname result
 #'
 #' @export
-unwrap_result <- function(x) {
-  if (!is_result(x)) return(x)
+result_is_ok <- function(x) {
+  UseMethod("result_is_ok")
+}
+
+#' @rdname result
+#'
+#' @export
+result_is_ok.result <- function(x) is.null(x$error)
+
+#' @rdname result
+#'
+#' @export
+result_is_ok.list <- function(x) {
+  all(purrr::map_lgl(x, result_is_ok))
+}
+
+#' @rdname result
+#'
+#' @export
+result_is_error <- function(x) {
+  UseMethod("result_is_error")
+}
+
+#' @rdname result
+#'
+#' @export
+result_is_error.result <- function(x) !is.null(x$error)
+
+#' @rdname result
+#'
+#' @export
+result_is_error.list <- function(x) {
+  any(purrr::map_lgl(x, result_is_error))
+}
+
+#' @rdname result
+#'
+#' @export
+unwrap <- function(x) {
+  UseMethod("unwrap")
+}
+
+#' @rdname result
+#'
+#' @export
+unwrap.result <- function(x) {
   if (is.null(x$error)) {
     x$result
   } else {
     stop(x$error)
   }
+}
+
+#' @rdname result
+#'
+#' @export
+unwrap.list <- function(x) {
+  purrr::map(x, unwrap)
 }
