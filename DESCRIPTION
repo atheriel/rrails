@@ -9,8 +9,10 @@ Description: This package provides a new pipe operator, '%>>=%' (pronounced
     approach is inspired by Scott Wlaschin's writing on "Railroad Oriented
     Programming" in 'F#' <https://fsharpforfunandprofit.com/rop/>.
 License: GPL-3
-Imports: rlang
-Suggests: lintr,
+Imports: purrr,
+    rlang
+Suggests: dplyr (>= 0.7.0),
+    lintr,
     testthat
 Encoding: UTF-8
 LazyData: true
