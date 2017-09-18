@@ -2,10 +2,23 @@
 % Please edit documentation in R/bind_list.R
 \name{\%>>=\%.list}
 \alias{\%>>=\%.list}
-\title{Bind list objects}
+\alias{bind-list}
+\title{Bind each element of a list}
 \usage{
 \method{\%>>=\%}{list}(lhs, rhs)
 }
+\arguments{
+\item{lhs}{An object of class \code{"list"}.}
+
+\item{rhs}{A function or block, bound to each element of \code{lhs} successively.}
+}
 \description{
-Bind list objects
+The bind operator for an object of class \code{"list"} binds the function or block
+on the right-hand side for each element in the list, returning the result.
+That is, for each element \code{elt} in \code{lhs}, apply \code{elt \%>>=\% rhs} and
+collect the outputs.
+}
+\details{
+The right-hand side syntax is largely identitcal to that of the pipe
+operator, \code{\link[magrittr]{\%>\%}}.
 }

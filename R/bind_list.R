@@ -1,6 +1,20 @@
-#' Bind list objects
+#' Bind each element of a list
+#'
+#' The bind operator for an object of class `"list"` binds the function or block
+#' on the right-hand side for each element in the list, returning the result.
+#' That is, for each element `elt` in `lhs`, apply \code{elt \%>>=\% rhs} and
+#' collect the outputs.
+#'
+#' @param lhs An object of class `"list"`.
+#' @param rhs A function or block, bound to each element of `lhs` successively.
+#'
+#' @details
+#'
+#' The right-hand side syntax is largely identitcal to that of the pipe
+#' operator, \code{\link[magrittr]{\%>\%}}.
 #'
 #' @rdname bind-list
+#' @aliases %>>=%.list bind-list
 #'
 #' @export
 `%>>=%.list` <- function(lhs, rhs) {
@@ -10,7 +24,9 @@
 
   expr <- rlang::new_quosure(rlang::expr({
     # nolint start
-    res <- purrr::map(., function(.) rlang::UQE(rhs))
+    res <- purrr::map(., function(x) {
+      x %>>=% rlang::UQE(rhs)
+    })
     # nolint end
     res
   }),
