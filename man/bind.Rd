@@ -3,9 +3,12 @@
 \name{\%>>=\%}
 \alias{\%>>=\%}
 \alias{bind}
+\alias{\%>>=\%.default}
 \title{The 'bind' operator}
 \usage{
 lhs \%>>=\% rhs
+
+\method{\%>>=\%}{default}(lhs, rhs)
 }
 \arguments{
 \item{lhs}{The left-hand side of the operator.}
@@ -18,5 +21,13 @@ contain a function or block, evaluated with \code{.} bound to the value of
 \code{\%>>=\%} (pronounced "bind") is a generic operator intended to match
 the semantics of \code{>>=} in other functional programming languages, such as F#
 or Haskell. It is intended that the right-hand side will contain a function
-or block, similar to the pipe operator \code{\link[magrittr]{\%>\%}}.
+or block, similar to the pipe operator \code{\link[magrittr]{\%>\%}}. Bind is
+usually employed to apply functions to the contents of possibly-opaque
+"container" objects. See \link{bind-result} or \link{bind-list} for examples.
+}
+\details{
+By default, it will simply pipe the left-hand side into the function or block
+on the right-hand side, as with \code{\link[magrittr]{\%>\%}}, although this
+is not recommended -- any S3 classes with a "bind" implementation of their
+own might yield very different results than the default behaviour.
 }
