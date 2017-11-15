@@ -16,7 +16,8 @@ library(rrails)
 This package provides a new pipe operator, `%>>=%` (pronounced "bind") for
 writing failure-tolerant R code. Its approach is inspired by Scott Wlaschin's
 articles and talks about ["Railroad Oriented Programming"](https://fsharpforfunandprofit.com/rop/) in
-in the F# language.
+in the F# language, as well as the error-handling paradigms of the Rust and
+Haskell languages.
 
 ## A Motivating Problem
 

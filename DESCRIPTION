@@ -4,10 +4,11 @@ Title: Railroad-Oriented Programming, in R
 Version: 0.1.0.9000
 Authors@R: person("Aaron", "Jacobs", email = "atheriel@gmail.com",
                   role = c("aut", "cre"))
-Description: This package provides a new pipe operator, '%>>=%' (pronounced
-    "bind"), and a 'result' S3 class for creating failure-tolerant code. Its
-    approach is inspired by Scott Wlaschin's writing on "Railroad Oriented
-    Programming" in 'F#' <https://fsharpforfunandprofit.com/rop/>.
+Description: A pipe operator '%>>=%' (pronounced "bind") and a 'result' S3 class
+    for creating failure-tolerant code. Its approach is inspired by Scott
+    Wlaschin's writing on "Railroad Oriented Programming" in 'F#'
+    <https://fsharpforfunandprofit.com/rop/>, as well as the error-handling
+    paradigms of 'Rust' and 'Haskell'.
 License: GPL-3
 Imports: purrr,
     rlang
