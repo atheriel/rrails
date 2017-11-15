@@ -25,6 +25,6 @@ error, that error is captured in the returned value instead. To turn a
 regular R object into a result (or vice-versa) see \link{result}.
 }
 \details{
-The right-hand side syntax is largely identitcal to that of the pipe
-operator, \code{\link[magrittr]{\%>\%}}.
+The right-hand side syntax is largely identical to that of the pipe operator,
+\code{\link[magrittr]{\%>\%}}.
 }

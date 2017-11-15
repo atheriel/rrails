@@ -10,8 +10,8 @@
 #'
 #' @details
 #'
-#' The right-hand side syntax is largely identitcal to that of the pipe
-#' operator, \code{\link[magrittr]{\%>\%}}.
+#' The right-hand side syntax is largely identical to that of the pipe operator,
+#' \code{\link[magrittr]{\%>\%}}.
 #'
 #' @rdname bind-list
 #' @aliases %>>=%.list bind-list

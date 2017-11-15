@@ -19,6 +19,6 @@ That is, for each element \code{elt} in \code{lhs}, apply \code{elt \%>>=\% rhs}
 collect the outputs.
 }
 \details{
-The right-hand side syntax is largely identitcal to that of the pipe
-operator, \code{\link[magrittr]{\%>\%}}.
+The right-hand side syntax is largely identical to that of the pipe operator,
+\code{\link[magrittr]{\%>\%}}.
 }
