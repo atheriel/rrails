@@ -4,3 +4,4 @@
 ^\.lintr$
 ^[^/]+.Rmd$
 ^cran-comments\.md$
+^[^/]+.org$
