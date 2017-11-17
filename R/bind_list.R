@@ -38,3 +38,6 @@
     rlang::eval_tidy(expr)
   }
 }
+
+# Suppress warnings for missing bindings for '.' in R CMD check.
+if (getRversion() >= "2.15.1") utils::globalVariables(c("."))
